@@ -13,10 +13,10 @@ export default class Menu extends Component {
             alt='Weight Tracker'
           />
         </div>
-        <div className='Menu-links'>
+        <div className='links'>
           <NavLink
-            activeClassName='Menu-link--active'
-            className='Menu-link'
+            activeClassName='link-active'
+            className='link'
             exact
             to={ routeCodes.HOME }
           >

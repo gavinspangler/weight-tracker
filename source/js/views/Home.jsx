@@ -5,16 +5,22 @@ const moment = require('moment');
 
 export default class Home extends Component {
   render() {
+    const currentDate = moment();
     const chartData = {
-      labels: [moment().format('MM/DD/YYYY'), 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      labels: [
+        currentDate.format('MM/DD/YYYY'),
+        currentDate.subtract(1, 'days').format('MM/DD/YYYY'),
+        currentDate.subtract(2, 'days').format('MM/DD/YYYY'),
+        currentDate.subtract(3, 'days').format('MM/DD/YYYY'),
+        currentDate.subtract(4, 'days').format('MM/DD/YYYY'),
+        currentDate.subtract(5, 'days').format('MM/DD/YYYY'),
+      ],
       datasets: [{
-        label: '# of Votes',
+        label: 'Weight (lbs)',
         data: [183, 185, 187, 184, 184, 187],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-        ],
+        fill: false,
         borderColor: [
-          'rgba(255,99,132,1)',
+          '#FC4A1A',
         ],
         borderWidth: 1,
       }],
@@ -28,13 +34,19 @@ export default class Home extends Component {
           },
         }],
       },
+      legend: {
+        display: false,
+      },
+      responsive: true,
       maintainAspectRatio: false,
     };
 
     return (
       <div className='Home'>
-        <h1>Weight Tracker</h1>
-        <div>
+        <div className='title'>
+          <h1>Weight Tracker</h1>
+        </div>
+        <div className='chart-wrapper'>
           <Line data={ chartData } options={ chartOptions } />
         </div>
       </div>
