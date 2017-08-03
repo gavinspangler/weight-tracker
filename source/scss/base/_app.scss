@@ -1,12 +1,17 @@
-$font-family-serif: Garamond, "Times New Roman", serif;
-$font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-family-sans-serif: "Lato", sans-serif;
+$large: 1.8em;
 
+$primary-color: #6E3667;
+$secondary-color: #88D317;
+$third-color: #1A0315;
+$fourth-color: #535353;
 $light-gray: #eee;
 $gray: #aaa;
 $black: #000;
 $white: #fff;
 
 $padding: 1em;
+$border-radius: 1em;
 
 html {
   font-size: 10px;
@@ -21,6 +26,7 @@ html {
 }
 
 body {
-  color: $black;
+  background-color: $primary-color;
+  color: $white;
   font-family: $font-family-sans-serif;
 }
