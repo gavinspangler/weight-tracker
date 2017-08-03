@@ -1,11 +1,17 @@
 .Menu {
+  display: flex;
+  padding: $padding;
+  align-items: center;
+
   .logo {
-    width: 10em;
-    display: table;
-    margin: 0 auto;
+    width: 5em;
   }
 
   .links {
     text-align: center;
+
+    .link {
+      padding-left: $padding;
+    }
   }
 }
