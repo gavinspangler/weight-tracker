@@ -1,6 +1,11 @@
 .Home {
+  padding: $padding;
+
   .chart-wrapper {
-    padding: 5em;
+    background-color: $white;
+    padding: 1em;
+    width: 60em;
+    border-radius: $border-radius;
   }
 
   .title{

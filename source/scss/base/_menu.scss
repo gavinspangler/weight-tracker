@@ -1,11 +1,24 @@
 .Menu {
+  align-items: center;
+  background-color: $white;
+  display: flex;
+  padding: $padding;
+
   .logo {
-    width: 10em;
-    display: table;
-    margin: 0 auto;
+    width: 5em;
   }
 
   .links {
-    text-align: center;
+
+    .link {
+      padding-left: $padding;
+      text-decoration: none;
+      color: $black;
+      font-size: $large;
+    }
+
+    .link-active {
+      color: $secondary-color;
+    }
   }
 }

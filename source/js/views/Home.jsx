@@ -2,18 +2,20 @@ import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
 
 const moment = require('moment');
+const _ = require('lodash');
 
 export default class Home extends Component {
   render() {
-    const currentDate = moment();
+    const date = moment();
+    const currentDate = _.cloneDeep(date);
     const chartData = {
       labels: [
+        date.subtract(5, 'days').format('MM/DD/YYYY'),
+        date.add(1, 'days').format('MM/DD/YYYY'),
+        date.add(1, 'days').format('MM/DD/YYYY'),
+        date.add(1, 'days').format('MM/DD/YYYY'),
+        date.add(1, 'days').format('MM/DD/YYYY'),
         currentDate.format('MM/DD/YYYY'),
-        currentDate.subtract(1, 'days').format('MM/DD/YYYY'),
-        currentDate.subtract(2, 'days').format('MM/DD/YYYY'),
-        currentDate.subtract(3, 'days').format('MM/DD/YYYY'),
-        currentDate.subtract(4, 'days').format('MM/DD/YYYY'),
-        currentDate.subtract(5, 'days').format('MM/DD/YYYY'),
       ],
       datasets: [{
         label: 'Weight (lbs)',
