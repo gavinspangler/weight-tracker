@@ -7,21 +7,23 @@
     color: $fourth-color;
     font-size: $medium;
     height: 2.5em;
-    margin-bottom: .2em;
+    margin-bottom: 0.2em;
   }
 
   .button:hover {
     color: $black;
+    cursor: pointer;
   }
 
   .chart-wrapper {
     background-color: $white;
+    border-bottom: 0.5em solid $secondary-color;
     padding: 1em;
-    width: 60em;
-    border-bottom: .5em solid $secondary-color;
   }
 
-  .title{
-    text-align: center;
+  .title-bar {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
   }
 }

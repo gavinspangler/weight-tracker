@@ -32,7 +32,7 @@ export default class Home extends Component {
         data: [183, 185, 187, 184, 184, 187],
         fill: false,
         borderColor: [
-          '#FC4A1A',
+          '#1A0315',
         ],
         borderWidth: 1,
       }],
@@ -55,11 +55,15 @@ export default class Home extends Component {
 
     return (
       <div className='Home'>
-        <div className='title'>
-          <h1>Weight Tracker</h1>
-        </div>
         <div>
-          <button type='button' className='button' onClick={ this.handleLogWeight }>Log Weight</button>
+          <div className='title-bar'>
+            <div>
+              <h1>Weight Tracker</h1>
+            </div>
+            <div>
+              <button type='button' className='button' onClick={ this.handleLogWeight }>Log Weight</button>
+            </div>
+          </div>
           <div className='chart-wrapper'>
             <Line data={ chartData } options={ chartOptions } />
           </div>
