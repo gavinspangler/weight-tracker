@@ -5,6 +5,16 @@ const moment = require('moment');
 const _ = require('lodash');
 
 export default class Home extends Component {
+  constructor() {
+    super();
+
+    this.handleLogWeight = this.handleLogWeight.bind(this);
+  }
+
+  handleLogWeight() {
+    console.log(moment().format('MM/DD/YYYY'));
+  }
+
   render() {
     const date = moment();
     const currentDate = _.cloneDeep(date);
@@ -48,8 +58,11 @@ export default class Home extends Component {
         <div className='title'>
           <h1>Weight Tracker</h1>
         </div>
-        <div className='chart-wrapper'>
-          <Line data={ chartData } options={ chartOptions } />
+        <div>
+          <button type='button' className='button' onClick={ this.handleLogWeight }>Log Weight</button>
+          <div className='chart-wrapper'>
+            <Line data={ chartData } options={ chartOptions } />
+          </div>
         </div>
       </div>
     );

@@ -1,6 +1,19 @@
 .Home {
   padding: $padding;
 
+  .button {
+    background-color: $secondary-color;
+    border: 0;
+    color: $fourth-color;
+    font-size: $medium;
+    height: 2.5em;
+    margin-bottom: .2em;
+  }
+
+  .button:hover {
+    color: $black;
+  }
+
   .chart-wrapper {
     background-color: $white;
     padding: 1em;
