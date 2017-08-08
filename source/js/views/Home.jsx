@@ -8,36 +8,42 @@ export default class Home extends Component {
   constructor() {
     super();
 
+    const date = moment();
+    const currentDate = _.cloneDeep(date);
+
+    this.state = {
+      chartData: {
+        labels: [
+          date.subtract(5, 'days').format('MM/DD/YYYY'),
+          date.add(1, 'days').format('MM/DD/YYYY'),
+          date.add(1, 'days').format('MM/DD/YYYY'),
+          date.add(1, 'days').format('MM/DD/YYYY'),
+          date.add(1, 'days').format('MM/DD/YYYY'),
+          currentDate.format('MM/DD/YYYY'),
+        ],
+        datasets: [{
+          label: 'Weight (lbs)',
+          data: [183, 185, 187, 184, 184, 187],
+          fill: false,
+          borderColor: [
+            '#1A0315',
+          ],
+          borderWidth: 1,
+        }],
+      },
+    };
+
     this.handleLogWeight = this.handleLogWeight.bind(this);
   }
 
   handleLogWeight() {
-    console.log(moment().format('MM/DD/YYYY'));
+    const chartData = this.state.chartData;
+    chartData.labels.push(moment());
+    chartData.datasets[0].data.push(190);
+    this.setState({ chartData });
   }
 
   render() {
-    const date = moment();
-    const currentDate = _.cloneDeep(date);
-    const chartData = {
-      labels: [
-        date.subtract(5, 'days').format('MM/DD/YYYY'),
-        date.add(1, 'days').format('MM/DD/YYYY'),
-        date.add(1, 'days').format('MM/DD/YYYY'),
-        date.add(1, 'days').format('MM/DD/YYYY'),
-        date.add(1, 'days').format('MM/DD/YYYY'),
-        currentDate.format('MM/DD/YYYY'),
-      ],
-      datasets: [{
-        label: 'Weight (lbs)',
-        data: [183, 185, 187, 184, 184, 187],
-        fill: false,
-        borderColor: [
-          '#1A0315',
-        ],
-        borderWidth: 1,
-      }],
-    };
-
     const chartOptions = {
       scales: {
         yAxes: [{
@@ -65,7 +71,7 @@ export default class Home extends Component {
             </div>
           </div>
           <div className='chart-wrapper'>
-            <Line data={ chartData } options={ chartOptions } />
+            <Line data={ this.state.chartData } options={ chartOptions } redraw />
           </div>
         </div>
       </div>

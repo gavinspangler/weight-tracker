@@ -1,7 +1,6 @@
 $font-family-sans-serif: "Lato", sans-serif;
 $large: 1.8em;
 $medium: 1.5em;
-
 $primary-color: #6E3667;
 $secondary-color: #88D317;
 $third-color: #1A0315;
@@ -10,13 +9,17 @@ $light-gray: #eee;
 $gray: #aaa;
 $black: #000;
 $white: #fff;
-
 $padding: 1em;
 
 html {
+  background-attachment: fixed;
+  background-image: url("../assets/img/background-image.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
   font-size: 10px;
 
   @include lg {
+    background-position: bottom;
     font-size: 12px;
   }
 
@@ -26,7 +29,6 @@ html {
 }
 
 body {
-  background-color: $primary-color;
   color: $white;
   font-family: $font-family-sans-serif;
 }
