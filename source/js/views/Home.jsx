@@ -1,32 +1,76 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Line } from 'react-chartjs-2';
+import { PropTypes } from 'prop-types';
+import { testAsync } from 'actions/app';
 
 const moment = require('moment');
 const _ = require('lodash');
 
+@connect(state => ({
+  asyncData: state.app.get('asyncData'),
+  asyncError: state.app.get('asyncError'),
+  asyncLoading: state.app.get('asyncLoading'),
+}))
 export default class Home extends Component {
-  render() {
+  static propTypes = {
+    asyncData: PropTypes.string,
+    asyncError: PropTypes.object,
+    asyncLoading: PropTypes.bool,
+    // from react-redux connect
+    dispatch: PropTypes.func,
+  }
+
+  constructor() {
+    super();
+
     const date = moment();
     const currentDate = _.cloneDeep(date);
-    const chartData = {
-      labels: [
-        date.subtract(5, 'days').format('MM/DD/YYYY'),
-        date.add(1, 'days').format('MM/DD/YYYY'),
-        date.add(1, 'days').format('MM/DD/YYYY'),
-        date.add(1, 'days').format('MM/DD/YYYY'),
-        date.add(1, 'days').format('MM/DD/YYYY'),
-        currentDate.format('MM/DD/YYYY'),
-      ],
-      datasets: [{
-        label: 'Weight (lbs)',
-        data: [183, 185, 187, 184, 184, 187],
-        fill: false,
-        borderColor: [
-          '#FC4A1A',
+
+    this.state = {
+      chartData: {
+        labels: [
+          date.subtract(5, 'days').format('MM/DD/YYYY'),
+          date.add(1, 'days').format('MM/DD/YYYY'),
+          date.add(1, 'days').format('MM/DD/YYYY'),
+          date.add(1, 'days').format('MM/DD/YYYY'),
+          date.add(1, 'days').format('MM/DD/YYYY'),
+          currentDate.format('MM/DD/YYYY'),
         ],
-        borderWidth: 1,
-      }],
+        datasets: [{
+          label: 'Weight (lbs)',
+          data: [183, 185, 187, 184, 184, 187],
+          fill: false,
+          borderColor: [
+            '#1A0315',
+          ],
+          borderWidth: 1,
+        }],
+      },
     };
+
+    this.handleLogWeight = this.handleLogWeight.bind(this);
+  }
+
+  componentWillMount() {
+    const { dispatch } = this.props;
+
+    dispatch(testAsync());
+  }
+
+  handleLogWeight() {
+    const chartData = this.state.chartData;
+    chartData.labels.push(moment());
+    chartData.datasets[0].data.push(190);
+    this.setState({ chartData });
+  }
+
+  render() {
+    const {
+      asyncData,
+      asyncError,
+      asyncLoading,
+    } = this.props;
 
     const chartOptions = {
       scales: {
@@ -45,11 +89,21 @@ export default class Home extends Component {
 
     return (
       <div className='Home'>
-        <div className='title'>
-          <h1>Weight Tracker</h1>
-        </div>
-        <div className='chart-wrapper'>
-          <Line data={ chartData } options={ chartOptions } />
+        <div>
+          <div className='title-bar'>
+            <div>
+              <h1>Weight Tracker</h1>
+            </div>
+            <div>
+              <button type='button' className='button' onClick={ this.handleLogWeight }>Log Weight</button>
+            </div>
+          </div>
+          <div className='chart-wrapper'>
+            { asyncData && <p>{ asyncData }</p> }
+            { asyncLoading && <p>Loading...</p> }
+            { asyncError && <p>Error: { asyncError }</p> }
+            <Line data={ this.state.chartData } options={ chartOptions } redraw />
+          </div>
         </div>
       </div>
     );

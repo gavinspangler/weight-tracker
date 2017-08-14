@@ -1,14 +1,33 @@
 .Home {
   padding: $padding;
 
-  .chart-wrapper {
-    background-color: $white;
-    padding: 1em;
-    width: 60em;
-    border-radius: $border-radius;
+  .button {
+    background-color: $secondary-color;
+    border: 0;
+    color: $fourth-color;
+    font-size: $medium;
+    height: 2.5em;
+    margin-bottom: 0.2em;
   }
 
-  .title{
-    text-align: center;
+  .button:hover {
+    color: $black;
+    cursor: pointer;
+  }
+
+  .button:focus {
+    outline: 0;
+  }
+
+  .chart-wrapper {
+    background-color: $white;
+    border-bottom: 0.5em solid $secondary-color;
+    padding: 1em;
+  }
+
+  .title-bar {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
   }
 }
