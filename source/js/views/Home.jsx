@@ -1,10 +1,26 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Line } from 'react-chartjs-2';
+import { PropTypes } from 'prop-types';
+import { testAsync } from 'actions/app';
 
 const moment = require('moment');
 const _ = require('lodash');
 
+@connect(state => ({
+  asyncData: state.app.get('asyncData'),
+  asyncError: state.app.get('asyncError'),
+  asyncLoading: state.app.get('asyncLoading'),
+}))
 export default class Home extends Component {
+  static propTypes = {
+    asyncData: PropTypes.string,
+    asyncError: PropTypes.object,
+    asyncLoading: PropTypes.bool,
+    // from react-redux connect
+    dispatch: PropTypes.func,
+  }
+
   constructor() {
     super();
 
@@ -36,6 +52,12 @@ export default class Home extends Component {
     this.handleLogWeight = this.handleLogWeight.bind(this);
   }
 
+  componentWillMount() {
+    const { dispatch } = this.props;
+
+    dispatch(testAsync());
+  }
+
   handleLogWeight() {
     const chartData = this.state.chartData;
     chartData.labels.push(moment());
@@ -44,6 +66,12 @@ export default class Home extends Component {
   }
 
   render() {
+    const {
+      asyncData,
+      asyncError,
+      asyncLoading,
+    } = this.props;
+
     const chartOptions = {
       scales: {
         yAxes: [{
@@ -71,6 +99,9 @@ export default class Home extends Component {
             </div>
           </div>
           <div className='chart-wrapper'>
+            { asyncData && <p>{ asyncData }</p> }
+            { asyncLoading && <p>Loading...</p> }
+            { asyncError && <p>Error: { asyncError }</p> }
             <Line data={ this.state.chartData } options={ chartOptions } redraw />
           </div>
         </div>
