@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Line } from 'react-chartjs-2';
 import { PropTypes } from 'prop-types';
 import { testAsync } from 'actions/app';
+
+import LineChart from 'components/Charts/LineChart';
 
 const moment = require('moment');
 const _ = require('lodash');
@@ -14,9 +15,6 @@ const _ = require('lodash');
 }))
 export default class Home extends Component {
   static propTypes = {
-    asyncData: PropTypes.string,
-    asyncError: PropTypes.object,
-    asyncLoading: PropTypes.bool,
     // from react-redux connect
     dispatch: PropTypes.func,
   }
@@ -28,25 +26,15 @@ export default class Home extends Component {
     const currentDate = _.cloneDeep(date);
 
     this.state = {
-      chartData: {
-        labels: [
-          date.subtract(5, 'days').format('MM/DD/YYYY'),
-          date.add(1, 'days').format('MM/DD/YYYY'),
-          date.add(1, 'days').format('MM/DD/YYYY'),
-          date.add(1, 'days').format('MM/DD/YYYY'),
-          date.add(1, 'days').format('MM/DD/YYYY'),
-          currentDate.format('MM/DD/YYYY'),
-        ],
-        datasets: [{
-          label: 'Weight (lbs)',
-          data: [183, 185, 187, 184, 184, 187],
-          fill: false,
-          borderColor: [
-            '#1A0315',
-          ],
-          borderWidth: 1,
-        }],
-      },
+      xValues: [
+        date.subtract(5, 'days').format('MM/DD/YYYY'),
+        date.add(1, 'days').format('MM/DD/YYYY'),
+        date.add(1, 'days').format('MM/DD/YYYY'),
+        date.add(1, 'days').format('MM/DD/YYYY'),
+        date.add(1, 'days').format('MM/DD/YYYY'),
+        currentDate.format('MM/DD/YYYY'),
+      ],
+      yValues: [183, 185, 187, 184, 184, 187],
     };
 
     this.handleLogWeight = this.handleLogWeight.bind(this);
@@ -59,34 +47,14 @@ export default class Home extends Component {
   }
 
   handleLogWeight() {
-    const chartData = this.state.chartData;
-    chartData.labels.push(moment());
-    chartData.datasets[0].data.push(190);
-    this.setState({ chartData });
+    const xValues = this.state.xValues;
+    const yValues = this.state.yValues;
+    xValues.push(moment());
+    yValues.push(190);
+    this.setState({ xValues, yValues });
   }
 
   render() {
-    const {
-      asyncData,
-      asyncError,
-      asyncLoading,
-    } = this.props;
-
-    const chartOptions = {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: false,
-          },
-        }],
-      },
-      legend: {
-        display: false,
-      },
-      responsive: true,
-      maintainAspectRatio: false,
-    };
-
     return (
       <div className='Home'>
         <div>
@@ -99,10 +67,7 @@ export default class Home extends Component {
             </div>
           </div>
           <div className='chart-wrapper'>
-            { asyncData && <p>{ asyncData }</p> }
-            { asyncLoading && <p>Loading...</p> }
-            { asyncError && <p>Error: { asyncError }</p> }
-            <Line data={ this.state.chartData } options={ chartOptions } redraw />
+            <LineChart xValues={ this.state.xValues } yValues={ this.state.yValues } />
           </div>
         </div>
       </div>
