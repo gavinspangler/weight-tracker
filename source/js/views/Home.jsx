@@ -15,6 +15,9 @@ const _ = require('lodash');
 }))
 export default class Home extends Component {
   static propTypes = {
+    asyncData: PropTypes.string,
+    asyncError: PropTypes.object,
+    asyncLoading: PropTypes.bool,
     // from react-redux connect
     dispatch: PropTypes.func,
   }
@@ -55,12 +58,19 @@ export default class Home extends Component {
   }
 
   render() {
+    const {
+      asyncData,
+      asyncError,
+      asyncLoading,
+    } = this.props;
     return (
       <div className='Home'>
         <div>
           <div className='title-bar'>
             <div>
-              <h1>Weight Tracker</h1>
+              { asyncData && <h1>{ asyncData }</h1> }
+              { asyncLoading && <p>Loading...</p> }
+              { asyncError && <p>Error: { asyncError }</p> }
             </div>
             <div>
               <button type='button' className='button' onClick={ this.handleLogWeight }>Log Weight</button>
