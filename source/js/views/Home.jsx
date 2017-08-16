@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import { testAsync } from 'actions/app';
+import { fetchWeightData } from 'actions/app';
 
 import LineChart from 'components/Charts/LineChart';
 
 @connect(state => ({
-  asyncData: state.app.asyncData, // .get('asyncData'),
-  asyncError: state.app.asyncError, // get('asyncError'),
-  asyncLoading: state.app.asyncLoading, // .get('asyncLoading'),
+  weightData: state.app.weightData,
+  weightDataError: state.app.weightDataError,
+  weightDataLoading: state.app.weightDataLoading,
 }))
 export default class Home extends Component {
   static propTypes = {
-    asyncData: PropTypes.object,
-    asyncError: PropTypes.object,
-    asyncLoading: PropTypes.bool,
+    weightData: PropTypes.object,
+    weightDataError: PropTypes.object,
+    weightDataLoading: PropTypes.bool,
     // from react-redux connect
     dispatch: PropTypes.func,
   }
@@ -28,7 +28,7 @@ export default class Home extends Component {
   componentWillMount() {
     const { dispatch } = this.props;
 
-    dispatch(testAsync());
+    dispatch(fetchWeightData());
   }
 
   handleLogWeight() {
@@ -36,9 +36,9 @@ export default class Home extends Component {
 
   render() {
     const {
-      asyncData,
-      asyncError,
-      asyncLoading,
+      weightData,
+      weightDataError,
+      weightDataLoading,
     } = this.props;
 
     return (
@@ -52,13 +52,13 @@ export default class Home extends Component {
               <button type='button' className='button' onClick={ this.handleLogWeight }>Log Weight</button>
             </div>
           </div>
-          { asyncData &&
+          { weightData &&
             <div className='chart-wrapper'>
-              <LineChart xValues={ asyncData.xValues } yValues={ asyncData.yValues } />
+              <LineChart xValues={ weightData.xValues } yValues={ weightData.yValues } />
             </div>
           }
-          { asyncLoading && <p>Loading...</p> }
-          { asyncError && <p>Error: { asyncError }</p> }
+          { weightDataLoading && <p>Loading...</p> }
+          { weightDataError && <p>Error: { weightDataError }</p> }
         </div>
       </div>
     );

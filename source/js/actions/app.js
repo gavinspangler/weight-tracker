@@ -1,38 +1,38 @@
 import api from 'api';
 
-export const TEST_ASYNC_ACTION_START = 'TEST_ASYNC_ACTION_START';
-export const TEST_ASYNC_ACTION_ERROR = 'TEST_ASYNC_ACTION_ERROR';
-export const TEST_ASYNC_ACTION_SUCCESS = 'TEST_ASYNC_ACTION_SUCCESS';
+export const FETCH_WEIGHT_DATA_START = 'FETCH_WEIGHT_DATA_START';
+export const FETCH_WEIGHT_DATA_ERROR = 'FETCH_WEIGHT_DATA_ERROR';
+export const FETCH_WEIGHT_DATA_SUCCESS = 'FETCH_WEIGHT_DATA_SUCCESS';
 
 // Async action example
 
-function testAsyncStart() {
+function fetchWeightDataStart() {
   return {
-    type: TEST_ASYNC_ACTION_START,
+    type: FETCH_WEIGHT_DATA_START,
   };
 }
 
-function testAsyncSuccess(data) {
+function fetchWeightDataSuccess(data) {
   return {
-    type: TEST_ASYNC_ACTION_SUCCESS,
+    type: FETCH_WEIGHT_DATA_SUCCESS,
     data,
   };
 }
 
-function testAsyncError(error) {
+function fetchWeightDataError(error) {
   return {
-    type: TEST_ASYNC_ACTION_ERROR,
+    type: FETCH_WEIGHT_DATA_ERROR,
     error,
   };
 }
 
-export function testAsync() {
+export function fetchWeightData() {
   return function (dispatch) {
-    dispatch(testAsyncStart());
+    dispatch(fetchWeightDataStart());
 
-    api.testAsync()
-      .then(data => dispatch(testAsyncSuccess(data)))
-      .catch(error => dispatch(testAsyncError(error)));
+    api.fetchWeightData()
+      .then(data => dispatch(fetchWeightDataSuccess(data)))
+      .catch(error => dispatch(fetchWeightDataError(error)));
   };
 }
 

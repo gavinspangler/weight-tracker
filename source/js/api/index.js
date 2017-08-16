@@ -3,7 +3,7 @@ import 'es6-promise';
 const moment = require('moment');
 const _ = require('lodash');
 
-function testAsync() {
+function fetchWeightData() {
   return new Promise(resolve => {
     setTimeout(() => {
       const date = moment();
@@ -25,5 +25,5 @@ function testAsync() {
 }
 
 export default {
-  testAsync,
+  fetchWeightData,
 };
