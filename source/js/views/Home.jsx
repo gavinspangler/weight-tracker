@@ -5,17 +5,14 @@ import { testAsync } from 'actions/app';
 
 import LineChart from 'components/Charts/LineChart';
 
-const moment = require('moment');
-const _ = require('lodash');
-
 @connect(state => ({
-  asyncData: state.app.get('asyncData'),
-  asyncError: state.app.get('asyncError'),
-  asyncLoading: state.app.get('asyncLoading'),
+  asyncData: state.app.asyncData, // .get('asyncData'),
+  asyncError: state.app.asyncError, // get('asyncError'),
+  asyncLoading: state.app.asyncLoading, // .get('asyncLoading'),
 }))
 export default class Home extends Component {
   static propTypes = {
-    asyncData: PropTypes.string,
+    asyncData: PropTypes.object,
     asyncError: PropTypes.object,
     asyncLoading: PropTypes.bool,
     // from react-redux connect
@@ -24,21 +21,6 @@ export default class Home extends Component {
 
   constructor() {
     super();
-
-    const date = moment();
-    const currentDate = _.cloneDeep(date);
-
-    this.state = {
-      xValues: [
-        date.subtract(5, 'days').format('MM/DD/YYYY'),
-        date.add(1, 'days').format('MM/DD/YYYY'),
-        date.add(1, 'days').format('MM/DD/YYYY'),
-        date.add(1, 'days').format('MM/DD/YYYY'),
-        date.add(1, 'days').format('MM/DD/YYYY'),
-        currentDate.format('MM/DD/YYYY'),
-      ],
-      yValues: [183, 185, 187, 184, 184, 187],
-    };
 
     this.handleLogWeight = this.handleLogWeight.bind(this);
   }
@@ -50,11 +32,6 @@ export default class Home extends Component {
   }
 
   handleLogWeight() {
-    const xValues = this.state.xValues;
-    const yValues = this.state.yValues;
-    xValues.push(moment());
-    yValues.push(190);
-    this.setState({ xValues, yValues });
   }
 
   render() {
@@ -63,22 +40,25 @@ export default class Home extends Component {
       asyncError,
       asyncLoading,
     } = this.props;
+
     return (
       <div className='Home'>
         <div>
           <div className='title-bar'>
             <div>
-              { asyncData && <h1>{ asyncData }</h1> }
-              { asyncLoading && <p>Loading...</p> }
-              { asyncError && <p>Error: { asyncError }</p> }
+              <h1>Weight Tracker</h1>
             </div>
             <div>
               <button type='button' className='button' onClick={ this.handleLogWeight }>Log Weight</button>
             </div>
           </div>
-          <div className='chart-wrapper'>
-            <LineChart xValues={ this.state.xValues } yValues={ this.state.yValues } />
-          </div>
+          { asyncData &&
+            <div className='chart-wrapper'>
+              <LineChart xValues={ asyncData.xValues } yValues={ asyncData.yValues } />
+            </div>
+          }
+          { asyncLoading && <p>Loading...</p> }
+          { asyncError && <p>Error: { asyncError }</p> }
         </div>
       </div>
     );

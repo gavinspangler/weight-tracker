@@ -15,19 +15,19 @@ const initialState = Map({
 const actionsMap = {
   // Async action
   [TEST_ASYNC_ACTION_START]: (state) => {
-    return state.merge({
+    return Object.assign({}, state, {
       asyncLoading: true,
       asyncError: null,
     });
   },
   [TEST_ASYNC_ACTION_ERROR]: (state, action) => {
-    return state.merge({
+    return Object.assign({}, state, {
       asyncLoading: false,
       asyncError: action.data,
     });
   },
   [TEST_ASYNC_ACTION_SUCCESS]: (state, action) => {
-    return state.merge({
+    return Object.assign({}, state, {
       asyncLoading: false,
       asyncData: action.data,
     });
