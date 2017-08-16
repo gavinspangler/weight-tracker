@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import { testAsync } from 'actions/app';
+import { fetchWeightData } from 'actions/app';
 
 import LineChart from 'components/Charts/LineChart';
 
-const moment = require('moment');
-const _ = require('lodash');
-
 @connect(state => ({
-  asyncData: state.app.get('asyncData'),
-  asyncError: state.app.get('asyncError'),
-  asyncLoading: state.app.get('asyncLoading'),
+  weightData: state.app.weightData,
+  weightDataError: state.app.weightDataError,
+  weightDataLoading: state.app.weightDataLoading,
 }))
 export default class Home extends Component {
   static propTypes = {
+    weightData: PropTypes.object,
+    weightDataError: PropTypes.object,
+    weightDataLoading: PropTypes.bool,
     // from react-redux connect
     dispatch: PropTypes.func,
   }
@@ -22,39 +22,25 @@ export default class Home extends Component {
   constructor() {
     super();
 
-    const date = moment();
-    const currentDate = _.cloneDeep(date);
-
-    this.state = {
-      xValues: [
-        date.subtract(5, 'days').format('MM/DD/YYYY'),
-        date.add(1, 'days').format('MM/DD/YYYY'),
-        date.add(1, 'days').format('MM/DD/YYYY'),
-        date.add(1, 'days').format('MM/DD/YYYY'),
-        date.add(1, 'days').format('MM/DD/YYYY'),
-        currentDate.format('MM/DD/YYYY'),
-      ],
-      yValues: [183, 185, 187, 184, 184, 187],
-    };
-
     this.handleLogWeight = this.handleLogWeight.bind(this);
   }
 
   componentWillMount() {
     const { dispatch } = this.props;
 
-    dispatch(testAsync());
+    dispatch(fetchWeightData());
   }
 
   handleLogWeight() {
-    const xValues = this.state.xValues;
-    const yValues = this.state.yValues;
-    xValues.push(moment());
-    yValues.push(190);
-    this.setState({ xValues, yValues });
   }
 
   render() {
+    const {
+      weightData,
+      weightDataError,
+      weightDataLoading,
+    } = this.props;
+
     return (
       <div className='Home'>
         <div>
@@ -66,9 +52,13 @@ export default class Home extends Component {
               <button type='button' className='button' onClick={ this.handleLogWeight }>Log Weight</button>
             </div>
           </div>
-          <div className='chart-wrapper'>
-            <LineChart xValues={ this.state.xValues } yValues={ this.state.yValues } />
-          </div>
+          { weightData &&
+            <div className='chart-wrapper'>
+              <LineChart xValues={ weightData.xValues } yValues={ weightData.yValues } />
+            </div>
+          }
+          { weightDataLoading && <p>Loading...</p> }
+          { weightDataError && <p>Error: { weightDataError }</p> }
         </div>
       </div>
     );

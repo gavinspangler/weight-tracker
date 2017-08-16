@@ -1,35 +1,35 @@
 import { Map } from 'immutable';
 
 import {
-  TEST_ASYNC_ACTION_START,
-  TEST_ASYNC_ACTION_ERROR,
-  TEST_ASYNC_ACTION_SUCCESS,
+  FETCH_WEIGHT_DATA_START,
+  FETCH_WEIGHT_DATA_ERROR,
+  FETCH_WEIGHT_DATA_SUCCESS,
 } from 'actions/app';
 
 const initialState = Map({
-  asyncLoading: false,
-  asyncError: null,
-  asyncData: null,
+  weightDataLoading: false,
+  weightDataError: null,
+  weightData: null,
 });
 
 const actionsMap = {
   // Async action
-  [TEST_ASYNC_ACTION_START]: (state) => {
-    return state.merge({
-      asyncLoading: true,
-      asyncError: null,
+  [FETCH_WEIGHT_DATA_START]: (state) => {
+    return Object.assign({}, state, {
+      weightDataLoading: true,
+      weightDataError: null,
     });
   },
-  [TEST_ASYNC_ACTION_ERROR]: (state, action) => {
-    return state.merge({
-      asyncLoading: false,
-      asyncError: action.data,
+  [FETCH_WEIGHT_DATA_ERROR]: (state, action) => {
+    return Object.assign({}, state, {
+      weightDataLoading: false,
+      weightDataError: action.data,
     });
   },
-  [TEST_ASYNC_ACTION_SUCCESS]: (state, action) => {
-    return state.merge({
-      asyncLoading: false,
-      asyncData: action.data,
+  [FETCH_WEIGHT_DATA_SUCCESS]: (state, action) => {
+    return Object.assign({}, state, {
+      weightDataLoading: false,
+      weightData: action.data,
     });
   },
 };
