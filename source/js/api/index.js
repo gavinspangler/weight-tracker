@@ -24,6 +24,17 @@ function fetchWeightData() {
   });
 }
 
+function logWeight(weightData) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const newWeightData = _.clone(weightData);
+
+      resolve(newWeightData);
+    }, (Math.random() * 1000) + 1000); // 1-2 seconds delay
+  });
+}
+
 export default {
   fetchWeightData,
+  logWeight,
 };

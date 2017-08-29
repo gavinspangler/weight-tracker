@@ -4,7 +4,9 @@ export const FETCH_WEIGHT_DATA_START = 'FETCH_WEIGHT_DATA_START';
 export const FETCH_WEIGHT_DATA_ERROR = 'FETCH_WEIGHT_DATA_ERROR';
 export const FETCH_WEIGHT_DATA_SUCCESS = 'FETCH_WEIGHT_DATA_SUCCESS';
 
-// Async action example
+export const LOG_WEIGHT_START = 'LOG_WEIGHT_START';
+export const LOG_WEIGHT_ERROR = 'LOG_WEIGHT_ERROR';
+export const LOG_WEIGHT_SUCCESS = 'LOG_WEIGHT_SUCCESS';
 
 function fetchWeightDataStart() {
   return {
@@ -26,6 +28,19 @@ function fetchWeightDataError(error) {
   };
 }
 
+function logWeightStart() {
+  return {
+    type: LOG_WEIGHT_START,
+  };
+}
+
+function logWeightError(error) {
+  return {
+    type: LOG_WEIGHT_ERROR,
+    error,
+  };
+}
+
 export function fetchWeightData() {
   return function (dispatch) {
     dispatch(fetchWeightDataStart());
@@ -36,4 +51,13 @@ export function fetchWeightData() {
   };
 }
 
-// Update
+
+export function logWeight(weightData) {
+  return function (dispatch) {
+    dispatch(logWeightStart());
+
+    api.logWeight(weightData)
+      .then(dispatch(fetchWeightData()))
+      .catch(error => dispatch(logWeightError(error)));
+  };
+}
