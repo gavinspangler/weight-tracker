@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import { fetchWeightData } from 'actions/app';
+import { fetchWeightData, logWeight } from 'actions/app';
 
 import LineChart from 'components/Charts/LineChart';
 
@@ -22,7 +22,7 @@ export default class Home extends Component {
   constructor() {
     super();
 
-    this.handleLogWeight = this.handleLogWeight.bind(this);
+    this.logWeight = this.logWeight.bind(this);
   }
 
   componentWillMount() {
@@ -31,7 +31,10 @@ export default class Home extends Component {
     dispatch(fetchWeightData());
   }
 
-  handleLogWeight() {
+  logWeight() {
+    const { dispatch, weightData } = this.props;
+
+    dispatch(logWeight(weightData));
   }
 
   render() {
@@ -49,7 +52,7 @@ export default class Home extends Component {
               <h1>Weight Tracker</h1>
             </div>
             <div>
-              <button type='button' className='button' onClick={ this.handleLogWeight }>Log Weight</button>
+              <button type='button' className='button' onClick={ this.logWeight }>Log Weight</button>
             </div>
           </div>
           { weightData &&
