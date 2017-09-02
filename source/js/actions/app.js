@@ -1,39 +1,63 @@
 import api from 'api';
 
-export const TEST_ASYNC_ACTION_START = 'TEST_ASYNC_ACTION_START';
-export const TEST_ASYNC_ACTION_ERROR = 'TEST_ASYNC_ACTION_ERROR';
-export const TEST_ASYNC_ACTION_SUCCESS = 'TEST_ASYNC_ACTION_SUCCESS';
+export const FETCH_WEIGHT_DATA_START = 'FETCH_WEIGHT_DATA_START';
+export const FETCH_WEIGHT_DATA_ERROR = 'FETCH_WEIGHT_DATA_ERROR';
+export const FETCH_WEIGHT_DATA_SUCCESS = 'FETCH_WEIGHT_DATA_SUCCESS';
 
-// Async action example
+export const LOG_WEIGHT_START = 'LOG_WEIGHT_START';
+export const LOG_WEIGHT_ERROR = 'LOG_WEIGHT_ERROR';
+export const LOG_WEIGHT_SUCCESS = 'LOG_WEIGHT_SUCCESS';
 
-function testAsyncStart() {
+function fetchWeightDataStart() {
   return {
-    type: TEST_ASYNC_ACTION_START,
+    type: FETCH_WEIGHT_DATA_START,
   };
 }
 
-function testAsyncSuccess(data) {
+function fetchWeightDataSuccess(data) {
   return {
-    type: TEST_ASYNC_ACTION_SUCCESS,
+    type: FETCH_WEIGHT_DATA_SUCCESS,
     data,
   };
 }
 
-function testAsyncError(error) {
+function fetchWeightDataError(error) {
   return {
-    type: TEST_ASYNC_ACTION_ERROR,
+    type: FETCH_WEIGHT_DATA_ERROR,
     error,
   };
 }
 
-export function testAsync() {
-  return function (dispatch) {
-    dispatch(testAsyncStart());
-
-    api.testAsync()
-      .then(data => dispatch(testAsyncSuccess(data)))
-      .catch(error => dispatch(testAsyncError(error)));
+function logWeightStart() {
+  return {
+    type: LOG_WEIGHT_START,
   };
 }
 
-// Update
+function logWeightError(error) {
+  return {
+    type: LOG_WEIGHT_ERROR,
+    error,
+  };
+}
+
+export function fetchWeightData() {
+  return function (dispatch) {
+    dispatch(fetchWeightDataStart());
+
+    api.fetchWeightData()
+      .then(data => dispatch(fetchWeightDataSuccess(data)))
+      .catch(error => dispatch(fetchWeightDataError(error)));
+  };
+}
+
+
+export function logWeight(weightData) {
+  return function (dispatch) {
+    dispatch(logWeightStart());
+
+    api.logWeight(weightData)
+      .then(dispatch(fetchWeightData()))
+      .catch(error => dispatch(logWeightError(error)));
+  };
+}
